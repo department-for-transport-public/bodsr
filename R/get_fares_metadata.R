@@ -1,14 +1,21 @@
-##Get return from fares API
+##Return fare metadata table from the BODS API, including urls of full datasets
 
 #' @name get_fares_metadata
 #' @title Return fares metadata from the BODS API
 #' @export
 #'
-#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)
+#' @param api_key API key for the BODS dataset passed as a string.
+#' Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)
 #' @param limit integer. Maximum number of records to return for a query. Defaults to 25
-#' @param search string to search records on; can be a value or partial value to
-#' match the data set name, data set description, organisation name, or admin
-#' area name.
+#' @param noc string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
+#' A full lookup of NOC codes to bus operator names can be seen using noc_lookup().
+#' Defaults to NULL.
+#' @param status string. Limit results to fares data sets for specified status,
+#' accepted values are "published" or "inactive". Defaults to NULL.
+#' @param bounding_box vector of four numerics. Limit results to fares data sets
+#' that contain information for the area within the rectangular boundingBox
+#' you set using co-ordinates [minLatitude, maxLatitude, minLongitude, maxLongitude].
+#' Defaults to NULL.
 #'
 #' @importFrom httr GET content http_status
 #' @importFrom jsonlite fromJSON

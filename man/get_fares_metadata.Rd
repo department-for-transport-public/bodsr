@@ -13,13 +13,22 @@ get_fares_metadata(
 )
 }
 \arguments{
-\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
+\item{api_key}{API key for the BODS dataset passed as a string.
+Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
 
 \item{limit}{integer. Maximum number of records to return for a query. Defaults to 25}
 
-\item{search}{string to search records on; can be a value or partial value to
-match the data set name, data set description, organisation name, or admin
-area name.}
+\item{noc}{string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
+A full lookup of NOC codes to bus operator names can be seen using noc_lookup().
+Defaults to NULL.}
+
+\item{status}{string. Limit results to fares data sets for specified status,
+accepted values are "published" or "inactive". Defaults to NULL.}
+
+\item{bounding_box}{vector of four numerics. Limit results to fares data sets
+that contain information for the area within the rectangular boundingBox
+you set using co-ordinates [minLatitude, maxLatitude, minLongitude, maxLongitude].
+Defaults to NULL.}
 }
 \value{
 Returns a data frame of fares metadata including links to data from the BODS API.
