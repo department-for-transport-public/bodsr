@@ -2,14 +2,9 @@
 % Please edit documentation in R/get_fares_metadata.R
 \name{get_fares_metadata}
 \alias{get_fares_metadata}
-\alias{get_timetable_metadata}
 \title{Return fares metadata from the BODS API}
 \usage{
-get_timetable_metadata(
-  api_key = Sys.getenv("BODS_KEY"),
-  limit = 25,
-  search = NULL
-)
+get_fares_metadata(api_key = Sys.getenv("BODS_KEY"), limit = 25, search = NULL)
 }
 \arguments{
 \item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}

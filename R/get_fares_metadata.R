@@ -16,7 +16,7 @@
 #' @return Returns a data frame of fares metadata including links to data from the BODS API.
 
 #Function to pull in metadata
-get_timetable_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
+get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
                                    limit = 25,
                                    search = NULL) {
 
