@@ -3,4 +3,5 @@
 export(get_timetable_metadata)
 importFrom(httr,GET)
 importFrom(httr,content)
+importFrom(httr,http_status)
 importFrom(jsonlite,fromJSON)
