@@ -1,5 +1,9 @@
 #' @name noc_lookup
 #' @title Lookup between operator names and national operator code (NOC) lookup
+#' @export
+#'
+#' @return Returns a data frame of operator names and their corresponding national
+#' operator code from the BODS API.
 
 noc_lookup <- function(){
 

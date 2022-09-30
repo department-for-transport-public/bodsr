@@ -4,7 +4,13 @@
 \alias{get_fares_metadata}
 \title{Return fares metadata from the BODS API}
 \usage{
-get_fares_metadata(api_key = Sys.getenv("BODS_KEY"), limit = 25, search = NULL)
+get_fares_metadata(
+  api_key = Sys.getenv("BODS_KEY"),
+  limit = 25,
+  noc = NULL,
+  status = NULL,
+  bounding_box = NULL
+)
 }
 \arguments{
 \item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}

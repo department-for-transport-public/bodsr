@@ -17,29 +17,57 @@
 
 #Function to pull in metadata
 get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
-                                   limit = 25,
-                                   search = NULL) {
+                               limit = 25,
+                               noc = NULL,
+                               status = NULL,
+                               bounding_box = NULL) {
 
   ##Check data values received
   if(!is.numeric(limit)){
     stop("Please provide an integer value to the limit argument")
   }
 
-  ##Use search string if it's not null
-  if(!is.null(search)) {
+  ##Use noc values to search on if not null
+  if(!is.null(noc)) {
 
-    ##Swap spaces for character
-    search <- gsub(" ", "%20", search)
+    noc_check <- noc_lookup()$noc
+    ##Give an error if one or more NOC values aren't in the lookup
+    if(!all(noc %in% noc_check)){
 
-    search <- paste0("&search=", search)
+      stop("Invalid NOC codes:", noc[!(noc %in% noc_check)])
+    }
 
-  } else {
-    search <- ""
+    noc <- paste0("&noc=", paste(noc, collapse = ","))
+
   }
+
+  ##Use status value to search on if not null
+  if(!is.null(status)) {
+
+    status <- paste0("&status=", status)
+
+  }
+
+  ##Use bounding box coordinates to search on
+  if(!is.null(bounding_box)){
+
+    ##If there's not 4 coordinates, stop
+    if(length(bounding_box) != 4){
+      stop("Incorrect number of coordinates provided to bounding_box argument")
+    }
+
+    bounding_box <- paste0("&boundingBox=",
+                           paste0(bounding_box, collapse = "&boundingBox="))
+
+  }
+
+
   #Paste together URL for API
   url <- paste0("https://data.bus-data.dft.gov.uk/api/v1/fares/dataset?limit=",
                 limit,
-                search,
+                noc,
+                status,
+                bounding_box,
                 "&api_key=",
                 api_key)
 
@@ -61,5 +89,6 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
   message(paste("Returning", nrow(data), "records"))
 
   return(data)
+
 }
 

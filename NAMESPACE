@@ -2,6 +2,7 @@
 
 export(get_fares_metadata)
 export(get_timetable_metadata)
+export(noc_lookup)
 importFrom(httr,GET)
 importFrom(httr,content)
 importFrom(httr,http_status)
