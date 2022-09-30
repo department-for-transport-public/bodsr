@@ -4,14 +4,20 @@
 \alias{get_timetable_metadata}
 \title{Return timetable metadata from the BODS API}
 \usage{
-get_timetable_metadata(api_key, limit = 25)
+get_timetable_metadata(
+  api_key = Sys.getenv("BODS_KEY"),
+  limit = 25,
+  search = NULL
+)
 }
 \arguments{
 \item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
 
-\item{limit}{integer. Maximum number of records to return for a query. Defaults to 25
+\item{limit}{integer. Maximum number of records to return for a query. Defaults to 25}
 
-To return a lookup of current valid ATCO codes, use the lookup_atco_codes() function.}
+\item{search}{string to search records on; can be a value or partial value to
+match the data set name, data set description, organisation name, or admin
+area name.}
 }
 \value{
 Returns a data frame of timetable metadata including links to data from the BODS API.
