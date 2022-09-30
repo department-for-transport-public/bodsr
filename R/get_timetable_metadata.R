@@ -1,4 +1,4 @@
-##Get return from timetable API
+##Return timetable metadata table from the BODS API, including urls of full datasets
 
 #' @name get_timetable_metadata
 #' @title Return timetable metadata from the BODS API
