@@ -43,6 +43,9 @@ get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),
                              origin_ref = NULL,
                              destination_ref = NULL) {
 
+  ##Set user agent so BODS can track R users
+  ua <- httr::user_agent("https://github.com/department-for-transport/bodsr")
+
   ##Use bounding box coordinates to search on
   if(!is.null(bounding_box)){
 
@@ -91,7 +94,7 @@ get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),
                 "api_key=", api_key)
 
   ##Read from url
-  download <- httr::GET(url)
+  download <- httr::GET(url, ua)
 
 
   ##Return error message if authentication failed

@@ -13,3 +13,4 @@ not_null <- function(obj, string) {
     NULL
   }
 }
+

@@ -7,7 +7,17 @@
 get_timetable_metadata(
   api_key = Sys.getenv("BODS_KEY"),
   limit = 25,
-  search = NULL
+  search = NULL,
+  noc = NULL,
+  admin_area = NULL,
+  status = NULL,
+  end_date_start = NULL,
+  end_date_end = NULL,
+  modified_date = NULL,
+  start_date_start = NULL,
+  start_date_end = NULL,
+  dq_rag = NULL,
+  bods_compliance = NULL
 )
 }
 \arguments{

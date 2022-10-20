@@ -40,7 +40,20 @@
 #Function to pull in metadata
 get_timetable_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
                                    limit = 25,
-                                   search = NULL) {
+                                   search = NULL,
+                                   noc = NULL,
+                                   admin_area = NULL,
+                                   status = NULL,
+                                   end_date_start = NULL,
+                                   end_date_end = NULL,
+                                   modified_date = NULL,
+                                   start_date_start = NULL,
+                                   start_date_end = NULL,
+                                   dq_rag = NULL,
+                                   bods_compliance = NULL) {
+
+  ##Set user agent so BODS can track R users
+  ua <- httr::user_agent("https://github.com/department-for-transport/bodsr")
 
   ##Check data values received
   if(!is.numeric(limit)){
@@ -103,7 +116,7 @@ get_timetable_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
                 api_key)
 
   #Raw content from api
-  download <- httr::GET(url)
+  download <- httr::GET(url, ua)
 
   ##Return error message if authentication failed
   if(httr::http_status(download)$reason == "Unathorized"){

@@ -27,6 +27,9 @@ get_location_gtfs <- function(api_key = Sys.getenv("BODS_KEY"),
                              start_time_after = NULL,
                              start_time_before = NULL) {
 
+  ##Set user agent so BODS can track R users
+  ua <- httr::user_agent("https://github.com/department-for-transport/bodsr")
+
   ##Use bounding box coordinates to search on
   if(!is.null(bounding_box)){
 
@@ -55,7 +58,7 @@ get_location_gtfs <- function(api_key = Sys.getenv("BODS_KEY"),
                 "api_key=", api_key)
 
   ##Read from url
-  download <- httr::GET(url)
+  download <- httr::GET(url, ua)
 
 
   ##Return error message if authentication failed

@@ -29,6 +29,9 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
                                status = NULL,
                                bounding_box = NULL) {
 
+  ##Set user agent so BODS can track R users
+  ua <- httr::user_agent("https://github.com/department-for-transport/bodsr")
+
   ##Check data values received
   if(!is.numeric(limit)){
     stop("Please provide an integer value to the limit argument")
@@ -77,7 +80,7 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
                 api_key)
 
   #Raw content from api
-  download <- httr::GET(url)
+  download <- httr::GET(url, ua)
 
   ##Return error message if authentication failed
   if(httr::http_status(download)$reason == "Unathorized"){
