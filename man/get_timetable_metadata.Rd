@@ -17,7 +17,39 @@ get_timetable_metadata(
 
 \item{search}{string to search records on; can be a value or partial value to
 match the data set name, data set description, organisation name, or admin
-area name.}
+area name. Defaults to NULL.}
+
+\item{noc}{string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
+A full lookup of NOC to bus operator names can be seen using noc_lookup().
+Defaults to NULL.}
+
+\item{admin_area}{string or vector of strings. Limit results to datasets with services that stop
+within the specified area(s).  ATCO Area Codes are as specified in the \href{https://www.data.gov.uk/dataset/3b1766bf-04a3-44f5-bea9-5c74cf002e1d/national-public-transport-gazetteer-nptg}{NPTG area codes}
+Defaults to NULL.}
+
+\item{status}{string. Limit results to data sets with the specified status,
+accepted values are "published" or "inactive". Defaults to NULL.}
+
+\item{end_date_start}{datetime. Limit results to data sets with services with
+end dates after this date. Defaults to NULL.}
+
+\item{end_date_end}{datetime. Limit results to data sets with services with
+end dates before this date. Defaults to NULL.}
+
+\item{modified_date}{datetime. Limit results to data sets that have been
+created or updated since the specified date. Defaults to NULL.}
+
+\item{start_date_start}{datetime. Limit results to data sets with services
+with start dates after this date. Defaults to NULL.}
+
+\item{start_date_end}{datetime. Limit results to data sets with services
+with start dates before this date. Defaults to NULL.}
+
+\item{dq_rag}{string. Limit results to data sets with the specified RAG status.
+Accepted options are "red", "amber" and "green". Defaults to NULL.}
+
+\item{bods_compliance}{logical. Limit results to datasets with the specified
+BODS compliance status. Defaults to NULL.}
 }
 \value{
 Returns a data frame of timetable metadata including links to data from the BODS API.
