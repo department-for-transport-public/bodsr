@@ -8,7 +8,7 @@
 #' Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)
 #' @param limit integer. Maximum number of records to return for a query. Defaults to 25
 #' @param noc string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
-#' A full lookup of NOC codes to bus operator names can be seen using noc_lookup().
+#' A full lookup of NOC to bus operator names can be seen using noc_lookup().
 #' Defaults to NULL.
 #' @param status string. Limit results to fares data sets for specified status,
 #' accepted values are "published" or "inactive". Defaults to NULL.
@@ -44,16 +44,12 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
       stop("Invalid NOC codes:", noc[!(noc %in% noc_check)])
     }
 
-    noc <- paste0("&noc=", paste(noc, collapse = ","))
+    noc <- paste0("noc=", paste(noc, collapse = ","), "&")
 
   }
 
   ##Use status value to search on if not null
-  if(!is.null(status)) {
-
-    status <- paste0("&status=", status)
-
-  }
+  status <- not_null(status, "status")
 
   ##Use bounding box coordinates to search on
   if(!is.null(bounding_box)){
@@ -63,8 +59,9 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
       stop("Incorrect number of coordinates provided to bounding_box argument")
     }
 
-    bounding_box <- paste0("&boundingBox=",
-                           paste0(bounding_box, collapse = "&boundingBox="))
+    bounding_box <- paste0("boundingBox=",
+                           paste0(bounding_box, collapse = "&boundingBox="),
+                           "&")
 
   }
 
@@ -72,10 +69,11 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
   #Paste together URL for API
   url <- paste0("https://data.bus-data.dft.gov.uk/api/v1/fares/dataset?limit=",
                 limit,
+                "&",
                 noc,
                 status,
                 bounding_box,
-                "&api_key=",
+                "api_key=",
                 api_key)
 
   #Raw content from api

@@ -29,18 +29,16 @@ get_timetable_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
   if(!is.null(search)) {
 
     ##Swap spaces for character
-    search <- gsub(" ", "%20", search)
+    search <- paste0("search=", gsub(" ", "%20", search), "&")
 
-    search <- paste0("&search=", search)
-
-  } else {
-    search <- ""
   }
+
   #Paste together URL for API
   url <- paste0("https://data.bus-data.dft.gov.uk/api/v1/dataset?limit=",
                 limit,
+                "&",
                 search,
-                "&api_key=",
+                "api_key=",
                 api_key)
 
   #Raw content from api
