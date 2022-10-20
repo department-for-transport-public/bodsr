@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_location_xml.R
 \name{get_location_xml}
 \alias{get_location_xml}
-\title{Return XML location data from the BODS API}
+\title{Return XML vehicle location data from the BODS API}
 \usage{
 get_location_xml(
   api_key = Sys.getenv("BODS_KEY"),
@@ -16,7 +16,7 @@ get_location_xml(
 )
 }
 \arguments{
-\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
+\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}}
 
 \item{bounding_box}{vector of four numerics. Limit results to location data
 for vehicles within the rectangular boundingBox
@@ -39,17 +39,17 @@ specified producer_ref. Defaults to NULL.}
 
 \item{origin_ref}{string. Limit results to bus location data with the
 specified origin reference. Accepts any National Public Transport Access Nodes (NaPTAN) value,
-which can be found \link (https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan).
+which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
 Defaults to NULL.}
 
 \item{destination_ref}{string. Limit results to bus location data with the
 specified destination reference. Accepts any National Public Transport Access Nodes (NaPTAN) value,
-which can be found \link (https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan).
+which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
 Defaults to NULL.}
 }
 \value{
-Returns bus location data in XML SIRI-VM format. More detail on this format can be found \link(https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats)
+Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the BODS data formats documentation}
 }
 \description{
-Return XML location data from the BODS API
+Return XML vehicle location data from the BODS API
 }

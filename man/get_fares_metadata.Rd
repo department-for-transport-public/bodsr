@@ -14,7 +14,7 @@ get_fares_metadata(
 }
 \arguments{
 \item{api_key}{API key for the BODS dataset passed as a string.
-Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
+Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}}
 
 \item{limit}{integer. Maximum number of records to return for a query. Defaults to 25}
 

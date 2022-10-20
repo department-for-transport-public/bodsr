@@ -2,6 +2,8 @@
 #' @title Lookup between operator names and national operator code (NOC) lookup
 #' @export
 #'
+#' @importFrom utils download.file read.csv unzip
+#'
 #' @return Returns a data frame of operator names and their corresponding national
 #' operator code from the BODS API.
 

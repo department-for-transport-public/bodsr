@@ -5,7 +5,7 @@
 #' @export
 #'
 #' @param api_key API key for the BODS dataset passed as a string.
-#' Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)
+#' Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}
 #' @param limit integer. Maximum number of records to return for a query. Defaults to 25
 #' @param noc string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
 #' A full lookup of NOC to bus operator names can be seen using noc_lookup().

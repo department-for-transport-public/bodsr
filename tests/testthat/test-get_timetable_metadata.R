@@ -7,6 +7,5 @@ test_that("numeric value required for limit", {
 
 test_that("helpful error message with bad authentication", {
   expect_error(
-    get_timetable_metadata(api_key = "wrong key"),
-    "Authentication credentials are not valid; please check you are using a valid BODS API key")
+    get_timetable_metadata(api_key = "wrong key"))
 })

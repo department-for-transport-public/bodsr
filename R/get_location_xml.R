@@ -1,10 +1,10 @@
-##Return SIRI-VM XML location data from the BODS API
+##Return SIRI-VM XML vehicle location data from the BODS API
 
 #' @name get_location_xml
-#' @title Return XML location data from the BODS API
+#' @title Return XML vehicle location data from the BODS API
 #' @export
 #'
-#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)
+#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}
 #' @param bounding_box vector of four numerics. Limit results to location data
 #' for vehicles within the rectangular boundingBox
 #' you set using co-ordinates [minLatitude, maxLatitude, minLongitude, maxLongitude].
@@ -21,17 +21,17 @@
 #' specified producer_ref. Defaults to NULL.
 #' @param origin_ref string. Limit results to bus location data with the
 #' specified origin reference. Accepts any National Public Transport Access Nodes (NaPTAN) value,
-#' which can be found \link (https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan).
+#' which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
 #' Defaults to NULL.
 #' @param destination_ref string. Limit results to bus location data with the
 #' specified destination reference. Accepts any National Public Transport Access Nodes (NaPTAN) value,
-#' which can be found \link (https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan).
+#' which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
 #' Defaults to NULL.
 #'
 #' @importFrom httr GET content http_status
 #' @importFrom xml2 read_xml
 #'
-#' @return Returns bus location data in XML SIRI-VM format. More detail on this format can be found \link(https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats)
+#' @return Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the BODS data formats documentation}
 
 #Function to pull in metadata
 get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),

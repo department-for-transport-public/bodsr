@@ -13,7 +13,7 @@ get_location_gtfs(
 )
 }
 \arguments{
-\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
+\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}}
 
 \item{bounding_box}{vector of four numerics. Limit results to location data
 for vehicles within the rectangular boundingBox you set using co-ordinates
@@ -30,7 +30,7 @@ start time after the specified Unix timestamp. Defaults to NULL.}
 start time before the specified Unix timestamp. Defaults to NULL.}
 }
 \value{
-Returns bus location data in GTFS-RT format. More detail on this format can be found \link(https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats)
+Returns bus location data in GTFS-RT format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the BODS data formats documentation}
 }
 \description{
 Return GTFS-RT location data from the BODS API

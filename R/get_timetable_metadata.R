@@ -4,7 +4,7 @@
 #' @title Return timetable metadata from the BODS API
 #' @export
 #'
-#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)
+#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}
 #' @param limit integer. Maximum number of records to return for a query. Defaults to 25
 #' @param search string to search records on; can be a value or partial value to
 #' match the data set name, data set description, organisation name, or admin
