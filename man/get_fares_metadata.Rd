@@ -19,7 +19,7 @@ Can be obtained from \link(https://data.bus-data.dft.gov.uk/api/)}
 \item{limit}{integer. Maximum number of records to return for a query. Defaults to 25}
 
 \item{noc}{string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
-A full lookup of NOC codes to bus operator names can be seen using noc_lookup().
+A full lookup of NOC to bus operator names can be seen using noc_lookup().
 Defaults to NULL.}
 
 \item{status}{string. Limit results to fares data sets for specified status,
