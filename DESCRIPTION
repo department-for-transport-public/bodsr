@@ -3,7 +3,8 @@ Type: Package
 Title: An R wrapper for pulling data from the Bus Open Data Service ('BODS') API (<https://www.bus-data.dft.gov.uk/>) 
 Version: 0.1.0
 Authors@R: person("Francesca", "Bryden", , "francesca.bryden@dft.gov.uk", role = c("aut", "cre"))
-Description: This allows users to download 'NaPTAN' transport information, for the full dataset, by ATCO region code, or by name of region.
+Description: This allows users to download 'BODS' transport information from the API.
+    This includes timetable and fare metadata (including links for full datasets) and real-time location data in both xml or GTFS-RT formats.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
