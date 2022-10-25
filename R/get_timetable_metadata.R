@@ -91,11 +91,11 @@ get_timetable_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
 
   ##Create search strings for arguments if they are not null
   status <- not_null(status, "status")
-  end_date_start <- not_null(end_date_start, "endDateStart")
-  end_date_end <- not_null(end_date_end, "endDateEnd")
-  modified_date <- not_null(modified_date, "modifiedDate")
-  start_date_start <- not_null(start_date_start, "startDateStart")
-  start_date_end <- not_null(start_date_end, "startDateEnd")
+  end_date_start <- not_null_date(end_date_start, "endDateStart")
+  end_date_end <- not_null_date(end_date_end, "endDateEnd")
+  modified_date <- not_null_date(modified_date, "modifiedDate")
+  start_date_start <- not_null_date(start_date_start, "startDateStart")
+  start_date_end <- not_null_date(start_date_end, "startDateEnd")
   dq_rag <- not_null(dq_rag, "dqRag")
 
   #Paste together URL for API
