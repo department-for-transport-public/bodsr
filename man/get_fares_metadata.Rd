@@ -36,3 +36,20 @@ Returns a data frame of fares metadata including links to data from the BODS API
 \description{
 Return fares metadata from the BODS API
 }
+\examples{
+
+\dontrun{
+#Before running these examples, ensure you have an API key saved
+#Return the first 25 results of fares metadata with no filters
+get_fares_metadata()
+
+#Return fares metadata for National Express
+get_fares_metadata(noc = "NATX")
+
+#Return only published fares metadata for Go Ahead
+get_fares_metadata(noc = "BHBC", status = "published")
+
+#Return fares metadata for the specified bounding box
+get_fares_metadata(bounding_box = c(51.401, 51.509, 0.01, 0.201))
+}
+}

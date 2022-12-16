@@ -36,6 +36,22 @@
 #' @importFrom jsonlite fromJSON
 #'
 #' @return Returns a data frame of timetable metadata including links to data from the BODS API.
+#' @examples
+#'
+#' \dontrun{
+#' #Before running these examples, ensure you have an API key saved
+#' #Return the first 25 results of timetable metadata with no filters
+#' get_timetable_metadata()
+#'
+#' #Return timetable metadata for National Express
+#' get_timetable_metadata(noc = "NATX")
+#'
+#' #Return only published timetable metadata for Go Ahead with a green RAG status
+#' get_timetable_metadata(noc = "BHBC", status = "published", dq_rag = "green")
+#'
+#' #Return timetable metadata for the Devon admin area and search string
+#' get_timetable_metadata(admin_area = "110", search = "Plymouth Citybus")
+#' }
 
 #Function to pull in metadata
 get_timetable_metadata <- function(api_key = Sys.getenv("BODS_KEY"),

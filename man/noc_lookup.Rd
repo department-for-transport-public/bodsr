@@ -13,3 +13,8 @@ operator code from the BODS API.
 \description{
 Lookup between operator names and national operator code (NOC) lookup
 }
+\examples{
+
+##Check operator name lookup
+noc_lookup()
+}

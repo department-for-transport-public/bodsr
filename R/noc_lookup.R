@@ -6,6 +6,11 @@
 #'
 #' @return Returns a data frame of operator names and their corresponding national
 #' operator code from the BODS API.
+#'
+#' @examples
+#'
+#' ##Check operator name lookup
+#' noc_lookup()
 
 noc_lookup <- function(){
 
