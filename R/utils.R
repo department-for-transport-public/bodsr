@@ -59,6 +59,20 @@ zip_list <- function(url){
   return(files)
 }
 
+##Download and read xml
+get_raw_xml <- function(url){
+
+  xml_loc <- tempfile(fileext = ".xml")
+
+  httr::GET(
+    url = url,
+    write_disk(xml_loc, overwrite = TRUE)
+  )
+
+  xml2::read_xml(xml_loc)
+
+}
+
 ##Return a specific value from xml
 find_node_value <- function(x, xpath){
 
