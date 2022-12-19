@@ -58,3 +58,11 @@ zip_list <- function(url){
 
   return(files)
 }
+
+##Return a specific value from xml
+find_node_value <- function(x, xpath){
+
+xml2::xml_find_all(x = x, xpath = xpath) %>%
+  xml2::as_list() %>%
+  unlist()
+}
