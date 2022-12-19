@@ -1,32 +1,23 @@
-##Get line-level details from an xml file
-line_level_xml <- function(xml){
-
-  ##Create a table of values
-  tibble::tibble(
-    ##Get operator name
-    "tradingName" = find_node_value(xml, "//d1:TradingName"),
-    #Operator code
-    "operatorCode" = find_node_value(xml, "//d1:OperatorCode"),
-    #Licence number
-    "licenceNumber" = find_node_value(xml, "//d1:LicenceNumber[1]"),
-    #Service code
-    "serviceCode" = paste(licenceNumber, find_node_value(xml, "//d1:ServiceCode"), sep = ":"),
-    ##Line names
-    "lineName" = find_node_value(xml, "//d1:LineName"))
-}
-
-meta <- bodsr::get_timetable_metadata()[1,]
+file <- bodsr::get_timetable_metadata()[4,]
 
 extract_zip_or_xml <- function(file){
 
   ##Try to unzip with names if it's a zip
   if(file$extension == "zip"){
 
-    zip_list(file$url)
+    open_all_xml(file$url)
 
   } else if(file$extension == "xml"){
 
-    extract_single_line(file)
+    ##Download and open xml file
+    xml_loc <- tempfile(fileext = ".xml")
+
+    httr::GET(
+      url = file$url,
+      write_disk(xml_loc, overwrite = TRUE)
+    )
+
+    line_level_xml(xml_loc)
 
   }else{
     stop("Unsupported file type")
@@ -43,11 +34,9 @@ extract_single_line <- function(x){
                   operatorName, description, status, extension, dqScore, dqRag)
 
     ##Read in the xml
-    get_raw_xml(meta$url) %>%
-    ##Get line-level detail for it
-      line_level_xml() %>%
+      extract_zip_or_xml(meta) %>%
       ##Join to the URL deets
       bind_cols(meta)
 }
 
-extract_zip_or_xml(meta)
+extract_single_line(file)
