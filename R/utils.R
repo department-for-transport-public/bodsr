@@ -41,3 +41,20 @@ not_null_date <- function(date, string) {
     NULL
   }
 }
+
+##List everything inside a remote zip file
+zip_list <- function(url){
+
+  ##Download to temp location
+  folder <- tempfile()
+
+  httr::GET(
+    url = url,
+    write_disk(folder, overwrite = TRUE)
+  )
+
+  ##Read in first file as an XML
+  files <- utils::unzip(folder, list = TRUE)
+
+  return(files)
+}
