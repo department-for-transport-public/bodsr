@@ -1,44 +1,3 @@
-
-##List everything inside a remote zip file
-zip_list <- function(url){
-
-  ##Download to temp location
-  folder <- tempfile()
-
-  httr::GET(
-    url = url,
-    write_disk(folder, overwrite = TRUE)
-  )
-
-  ##Read in first file as an XML
-  files <- utils::unzip(folder, list = TRUE)
-
-  return(files)
-}
-
-##Download and read xml
-get_raw_xml <- function(url){
-
-  xml_loc <- tempfile(fileext = ".xml")
-
-  httr::GET(
-    url = url,
-    write_disk(xml_loc, overwrite = TRUE)
-  )
-
-  xml2::read_xml(xml_loc)
-
-}
-
-##Return a specific value from xml
-find_node_value <- function(x, xpath){
-
-  xml2::xml_find_all(x = x, xpath = xpath) %>%
-    xml2::as_list() %>%
-    unlist()
-}
-
-
 ##Get line-level details from an xml file
 line_level_xml <- function(xml){
 
@@ -56,11 +15,24 @@ line_level_xml <- function(xml){
     "lineName" = find_node_value(xml, "//d1:LineName"))
 }
 
-meta <- bodsr::get_timetable_metadata()
+meta <- bodsr::get_timetable_metadata()[1,]
 
+extract_zip_or_xml <- function(file){
 
-##Try to unzip with names
-if(meta$extension == "xml"){
+  ##Try to unzip with names if it's a zip
+  if(file$extension == "zip"){
+
+    zip_list(file$url)
+
+  } else if(file$extension == "xml"){
+
+    extract_single_line(file)
+
+  }else{
+    stop("Unsupported file type")
+  }
+
+}
 
 ##Extract data from xml file for a single line
 extract_single_line <- function(x){
@@ -77,3 +49,5 @@ extract_single_line <- function(x){
       ##Join to the URL deets
       bind_cols(meta)
 }
+
+extract_zip_or_xml(meta)
