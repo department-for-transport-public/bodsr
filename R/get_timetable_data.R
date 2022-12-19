@@ -1,4 +1,4 @@
-file <- bodsr::get_timetable_metadata()[4,]
+file <- bodsr::get_timetable_metadata()[1,]
 
 extract_zip_or_xml <- function(file){
 
