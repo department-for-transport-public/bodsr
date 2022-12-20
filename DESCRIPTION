@@ -9,7 +9,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.1
-Imports: httr, jsonlite, xml2, dplyr, purrr
+Imports: httr, jsonlite, xml2, dplyr, purrr, tibble, rlang
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
