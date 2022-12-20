@@ -68,7 +68,7 @@ open_all_xml <- function(url){
 
   httr::GET(
     url = url,
-    write_disk(zip_loc, overwrite = TRUE)
+    httr::write_disk(zip_loc, overwrite = TRUE)
   )
 
   ##Unzip the zip file to the temp location

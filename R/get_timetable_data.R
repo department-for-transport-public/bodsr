@@ -1,4 +1,4 @@
-file <- bodsr::get_timetable_metadata()[1,]
+file <- bodsr::get_timetable_metadata()
 
 extract_zip_or_xml <- function(file){
 
@@ -14,7 +14,7 @@ extract_zip_or_xml <- function(file){
 
     httr::GET(
       url = file$url,
-      write_disk(xml_loc, overwrite = TRUE)
+      httr::write_disk(xml_loc, overwrite = TRUE)
     )
 
     line_level_xml(xml_loc)
@@ -25,18 +25,29 @@ extract_zip_or_xml <- function(file){
 
 }
 
-##Extract data from xml file for a single line
-extract_single_line <- function(x){
+
+get_timetable_data <- function(timetable_metadata, level = "service_line"){
 
   ##Extract metadata that applies to all files
-  meta <- x %>%
+  meta <- timetable_metadata %>%
     dplyr::select(url, dataSetID = id,
                   operatorName, description, status, extension, dqScore, dqRag)
 
-    ##Read in the xml
-      extract_zip_or_xml(meta) %>%
+  rowwise_extract <- function(i){
+    message("Extracting row ", i, " of ", nrow(meta))
+
+    x <- meta[i, ]
+
+    x %>%
+      ##Read in the xml
+      extract_zip_or_xml() %>%
       ##Join to the URL deets
-      bind_cols(meta)
+      bind_cols(x)
+  }
+
+  #Loop over all the rows
+  purrr::map(.x = 1:nrow(meta),
+             .f = rowwise_extract)
 }
 
-extract_single_line(file)
+get_timetable_data(file)
