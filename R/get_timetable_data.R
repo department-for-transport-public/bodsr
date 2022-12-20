@@ -1,3 +1,11 @@
+#' @name extract_zip_or_xml
+#' @title Open data from a single line metadata table where it's zip or xml format
+#'
+#' @param file A single row of table metadata extracted using get_timetable_metadata()
+#'
+#' @importFrom httr write_disk GET
+#'
+#' @return returns a dataframe of information extracted from the given xml or zip url
 
 extract_zip_or_xml <- function(file){
 
@@ -24,8 +32,20 @@ extract_zip_or_xml <- function(file){
 
 }
 
+#' @name get_timetable_data
+#' @title Extract timetable data from all rows of the provided metadata table
+#'
+#' @param file A single row of table metadata extracted using get_timetable_metadata()
+#' @param level A string specifying whether data returned should be at the
+#' line or stop level. Options can be "line" or "stop"
+#'
+#' @importFrom httr write_disk GET
+#' @export
+#'
+#' @return returns list of timetable dataframes, with each dataframe corresponding to a
+#' row on the provided timetable metadata
 
-get_timetable_data <- function(timetable_metadata, level = "service_line"){
+get_timetable_data <- function(timetable_metadata, level = "line"){
 
   ##Extract metadata that applies to all files
   meta <- timetable_metadata %>%

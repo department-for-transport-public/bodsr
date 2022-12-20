@@ -1,6 +1,5 @@
 ##Utility functions for working with XML
 
-
 #' @name find_node_value
 #' @title Search an xml file for a specific named mode and return the value(s) stored in it
 #'
@@ -31,6 +30,7 @@ find_node_value <- function(x, xpath){
 #'
 #' @importFrom xml2 read_xml
 #' @importFrom tibble tibble
+#' @importFrom purrr possibly
 #'
 #' @return Returns a table of values extracted from specified nodes of
 #' an xml document
@@ -86,8 +86,10 @@ line_level_xml <- function(x){
 #'
 #' @param x A url pointing towards a zip object
 #'
-#' @importFrom xml2 read_xml
-#' @importFrom tibble tibble
+#' @importFrom utils unzip
+#' @importFrom httr write_disk GET
+#' @importFrom purrr map_df
+#'
 #'
 #' @return returns a dataframe of information extracted from xml documents
 
