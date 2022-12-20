@@ -8,9 +8,9 @@ is not NULL}
 not_null_date(date, string)
 }
 \arguments{
-\item{string}{API string to append to R object}
+\item{date}{R object to check whether it is NULL or not}
 
-\item{obj}{R object to check whether it is NULL or not}
+\item{string}{API string to append to R object}
 }
 \description{
 Join together a date value and an associated API string if the value

@@ -35,11 +35,14 @@ extract_zip_or_xml <- function(file){
 #' @name get_timetable_data
 #' @title Extract timetable data from all rows of the provided metadata table
 #'
-#' @param file A single row of table metadata extracted using get_timetable_metadata()
+#' @param timetable_metadata A single row of table metadata extracted using get_timetable_metadata()
 #' @param level A string specifying whether data returned should be at the
 #' line or stop level. Options can be "line" or "stop"
 #'
 #' @importFrom httr write_disk GET
+#' @importFrom dplyr "%>%" bind_cols select
+#' @importFrom purrr map
+#' @importFrom rlang .data
 #' @export
 #'
 #' @return returns list of timetable dataframes, with each dataframe corresponding to a
@@ -49,8 +52,9 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
 
   ##Extract metadata that applies to all files
   meta <- timetable_metadata %>%
-    dplyr::select(url, dataSetID = id,
-                  operatorName, description, status, extension, dqScore, dqRag)
+    dplyr::select(.data$url, "dataSetID" = .data$id,
+                  .data$operatorName, .data$description, .data$status,
+                  .data$extension, .data$dqScore, .data$dqRag)
 
   rowwise_extract <- function(i){
     message("Extracting row ", i, " of ", nrow(meta))
@@ -61,7 +65,7 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
       ##Read in the xml
       extract_zip_or_xml() %>%
       ##Join to the URL deets
-      bind_cols(x)
+      dplyr::bind_cols(x)
   }
 
   #Loop over all the rows

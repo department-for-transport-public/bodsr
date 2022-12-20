@@ -84,7 +84,7 @@ line_level_xml <- function(x){
 #' @name open_all_xml
 #' @title Open every xml file within a zip object and extract data of interest from it
 #'
-#' @param x A url pointing towards a zip object
+#' @param url A url pointing towards a zip object
 #'
 #' @importFrom utils unzip
 #' @importFrom httr write_disk GET

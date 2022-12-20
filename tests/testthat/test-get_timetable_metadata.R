@@ -34,8 +34,5 @@ test_that("test that arguments work as expected", {
     expect_true(all(grepl("Stagecoach",
                           get_timetable_metadata(search = "Stagecoach")$operatorName)))
 
-    expect_true(get_timetable_metadata(end_date_start = as.Date("2022-04-01"))$lastEndDate,
-                 "published")
-
 
 })

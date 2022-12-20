@@ -18,7 +18,7 @@ not_null <- function(obj, string) {
 #' @title Join together a date value and an associated API string if the value
 #' is not NULL
 #'
-#' @param obj R object to check whether it is NULL or not
+#' @param date R object to check whether it is NULL or not
 #' @param string API string to append to R object
 
 not_null_date <- function(date, string) {

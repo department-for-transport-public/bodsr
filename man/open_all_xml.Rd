@@ -7,7 +7,7 @@
 open_all_xml(url)
 }
 \arguments{
-\item{x}{A url pointing towards a zip object}
+\item{url}{A url pointing towards a zip object}
 }
 \value{
 returns a dataframe of information extracted from xml documents
