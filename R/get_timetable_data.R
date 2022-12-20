@@ -1,4 +1,3 @@
-file <- bodsr::get_timetable_metadata()
 
 extract_zip_or_xml <- function(file){
 
@@ -50,4 +49,3 @@ get_timetable_data <- function(timetable_metadata, level = "service_line"){
              .f = rowwise_extract)
 }
 
-get_timetable_data(file)

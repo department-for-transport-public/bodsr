@@ -72,15 +72,15 @@ Return timetable metadata from the BODS API
 \dontrun{
 #Before running these examples, ensure you have an API key saved
 #Return the first 25 results of timetable metadata with no filters
-get_fares_metadata()
+get_timetable_metadata()
 
-#Return fares metadata for National Express
-get_fares_metadata(noc = "NATX")
+#Return timetable metadata for National Express
+get_timetable_metadata(noc = "NATX")
 
-#Return only published fares metadata for Go Ahead
-get_fares_metadata(noc = "BHBC", status = "published")
+#Return only published timetable metadata for Go Ahead with a green RAG status
+get_timetable_metadata(noc = "BHBC", status = "published", dq_rag = "green")
 
-#Return fares metadata for the specified bounding box
-get_fares_metadata(bounding_box = c(51.401, 51.509, 0.01, 0.201))
+#Return timetable metadata for the Devon admin area and search string
+get_timetable_metadata(admin_area = "110", search = "Plymouth Citybus")
 }
 }

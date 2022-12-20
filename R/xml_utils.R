@@ -1,5 +1,16 @@
 ##Utility functions for working with XML
 
+
+#' @name find_node_value
+#' @title Search an xml file for a specific named mode and return the value(s) stored in it
+#'
+#' @param x An xml object
+#' @param xpath string. The node name to search for within the xpath.
+#'
+#' @importFrom xml2 xml_find_all as_list xml_ns
+#'
+#' @return Returns a single string of values from the specified node
+
 ##Return a specific value from xml
 find_node_value <- function(x, xpath){
 
@@ -12,6 +23,17 @@ find_node_value <- function(x, xpath){
       }
 
 }
+
+#' @name line_level_xml
+#'
+#' @param x An xml object
+#' @title Pull a table of relevant values from specified nodes in the xml
+#'
+#' @importFrom xml2 read_xml
+#' @importFrom tibble tibble
+#'
+#' @return Returns a table of values extracted from specified nodes of
+#' an xml document
 
 ##Get line-level details from an xml file
 line_level_xml <- function(x){
@@ -58,6 +80,16 @@ line_level_xml <- function(x){
 
   return(values)
   }
+
+#' @name open_all_xml
+#' @title Open every xml file within a zip object and extract data of interest from it
+#'
+#' @param x A url pointing towards a zip object
+#'
+#' @importFrom xml2 read_xml
+#' @importFrom tibble tibble
+#'
+#' @return returns a dataframe of information extracted from xml documents
 
 ##Open every XML file in a zip and link them up to the names
 open_all_xml <- function(url){
