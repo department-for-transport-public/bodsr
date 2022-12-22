@@ -17,7 +17,8 @@ find_node_value <- function(x, xpath){
   if(any(grepl("d1", names(xml2::xml_ns(x))))){
     xml2::xml_find_all(x = x, xpath = xpath) %>%
       xml2::as_list() %>%
-      unlist() } else{
+      unlist()
+    } else{
         NULL
       }
 
