@@ -24,6 +24,26 @@ find_node_value <- function(x, xpath){
 
 }
 
+##Utility functions for working with XML
+
+#' @name count_nodes
+#' @title Search an xml file for a specific named node and count the number of instances
+#'
+#' @param x An xml object
+#' @param xpath string. The node name to search for within the xpath.
+#'
+#' @importFrom xml2 xml_find_all as_list xml_ns
+#'
+#' @return Returns a numeric count value
+
+count_nodes <- function(x, xpath){
+
+  x %>%
+    xml2::xml_find_all(xpath) %>%
+    length()
+
+}
+
 #' @name line_level_xml
 #'
 #' @param x An xml object
