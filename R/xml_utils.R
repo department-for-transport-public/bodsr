@@ -57,7 +57,9 @@ count_nodes <- function(x, xpath){
 #' an xml document
 
 ##Get line-level details from an xml file
-line_level_xml <- function(x){
+line_level_xml <- function(xml, count, total_count){
+
+  message("Reading file", count, "of", total_count)
 
   ##Create safe version of function that quietly fails
   poss_xml <- purrr::possibly(xml2::read_xml, otherwise = NULL)
@@ -106,6 +108,7 @@ line_level_xml <- function(x){
 #' @title Open every xml file within a zip object and extract data of interest from it
 #'
 #' @param url A url pointing towards a zip object
+#' @param fun name of a data extracting function to apply to the zip folder
 #'
 #' @importFrom utils unzip
 #' @importFrom httr write_disk GET
@@ -115,7 +118,7 @@ line_level_xml <- function(x){
 #' @return returns a dataframe of information extracted from xml documents
 
 ##Open every XML file in a zip and link them up to the names
-open_all_xml <- function(url){
+open_all_xml <- function(url, fun){
 
   ##Download to temp location
   zip_loc <- tempfile()
@@ -133,8 +136,10 @@ open_all_xml <- function(url){
   files_to_read <- list.files(folder, full.names = TRUE, pattern = "\\.xml")
 
   ##For each item in the folder, run extracting the single line over it
-  purrr::map_df(.x = files_to_read,
-                .f = line_level_xml,
-                .id = "filepath")
+  purrr::map2_df(.x = files_to_read,
+                 .y = 1:length(files_to_read),
+                 .f = fun,
+                 .id = "filepath",
+                 total_count = length(files_to_read))
 }
 

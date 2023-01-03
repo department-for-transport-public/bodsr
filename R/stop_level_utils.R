@@ -1,21 +1,4 @@
-##Get stop-level data
-urls <- get_timetable_metadata(status = "published")
-
-file <- urls[4,]
-
-##Download and open xml file
-xml_loc <- tempfile(fileext = ".xml")
-
-httr::GET(
-  url = file$url,
-  httr::write_disk(xml_loc, overwrite = TRUE)
-)
-
-
-xml <- xml2::read_xml(xml_loc)
-
-
-##Gather individual stop-level data from the timing data
+##Gather individual stop-level timing data from the journey data
 build_stops <- function(j){
 
   ##node name with number in it
@@ -42,12 +25,8 @@ build_stops <- function(j){
 
 }
 
-##Map this over every JPS value
-df <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
-              .f = build_stops)
-
-
-build_journey_pattern <- function(i){
+##Gather vehicle code and departure time lookup table
+build_vehicle_pattern <- function(i){
   tibble::tibble(
       "LineRef" = find_node_value(xml, "//d1:LineRef"),
       "VehicleJourneyCode" = find_node_value(xml, "//d1:VehicleJourneyCode"),
@@ -57,26 +36,26 @@ build_journey_pattern <- function(i){
 }
 
 
-df1 <- build_journey_pattern()
-
-##Create vehicle timing for each vehicle journey
+##Gather individual stop-level timing data from the vehicle data
 build_vehicle_timing_link <- function(i){
 
+  ##node name with number in it
+  node_name <- paste0("//d1:VehicleJourneys/d1:VehicleJourney[", i,
+         "]/d1:VehicleJourneyTimingLink")
+
   ##Pull out the vehicle timing ref and runtime for each link
-  link_ref_runtime <- function(j){
+  link_ref_runtime <- function(j, node_name){
     tibble::tibble(
-      "jpt_LinkRef" = find_node_value(xml, paste0("//d1:VehicleJourneys/d1:VehicleJourney[", i,
-                                                "]/d1:VehicleJourneyTimingLink[", j,
+      "jp_LinkRef" = find_node_value(xml, paste0(node_name, "[", j,
                                                 "]/d1:JourneyPatternTimingLinkRef")),
-      "RunTime_vehicle" = find_node_value(xml, paste0("//d1:VehicleJourneys/d1:VehicleJourney[", i,
-                                            "]/d1:VehicleJourneyTimingLink[", j, "]/d1:RunTime"))
+      "RunTime_vehicle" = find_node_value(xml, paste0(node_name, "[", j, "]/d1:RunTime"))
     )
   }
 
   ##Loop over every link
-  purrr::map_df(.x = 1:count_nodes(xml, paste0("//d1:VehicleJourneys/d1:VehicleJourney[", i,
-                                               "]/d1:VehicleJourneyTimingLink")),
-                .f = link_ref_runtime) %>%
+  purrr::map_df(.x = 1:count_nodes(xml, node_name),
+                .f = link_ref_runtime,
+                node_name = node_name) %>%
     dplyr::bind_cols(
 
 
@@ -88,11 +67,6 @@ build_vehicle_timing_link <- function(i){
       )
     )
 }
-
-##For each vehicle journey, produce link deets
-df2 <-  purrr::map_df(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
-              .f = build_vehicle_timing_link) %>%
-  unique()
 
 
 ##Create service journey and section reference lookup
@@ -107,20 +81,39 @@ unwrap_service_xml <- function(i){
 }
 
 
-df3 <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
-              .f = unwrap_service_xml)
 
+##Get stop-level data from xml
+stop_level_xml <- function(xml, count, total_count){
 
+  message("Reading file", count, "of", total_count)
 
-##Join everything up together
-##Join journey runtimes onto journey and vehicle codes
-dplyr::left_join(df, df3, by = "JourneyPatternSectionRef") %>%
-  dplyr::left_join(df1, by = c("LineRef", "JourneyPatternRef")) %>%
-  dplyr::left_join(df2) %>%
-  #Keep the cols we care about
-  dplyr::select(LineRef, SequenceNumber, VehicleJourneyCode, StopFrom, StopTo, DepartureTime, RunTime_journey, RunTime_vehicle) %>%
-  #Keep only unique values
-  unique() %>%
-  View()
+  xml <- xml2::read_xml(xml)
 
+  #Extract all 4 data sets
+  ##Runtime from journey data
+  times_j <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
+                      .f = build_stops)
+
+  #Journey pattern and section lookups
+  jps_lookup <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
+                       .f = unwrap_service_xml)
+
+  #Vehicle journey codes and times
+  vcodes <- build_vehicle_pattern()
+
+  ##Journey times from vehicle data
+  times_v <-  purrr::map_df(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
+                        .f = build_vehicle_timing_link) %>%
+    unique()
+
+  ##Join everything up together
+  ##Join journey runtimes onto journey and vehicle codes
+  dplyr::left_join(times_j, jps_lookup, by = "JourneyPatternSectionRef") %>%
+    dplyr::left_join(
+      #Join vehicle journey times and patterns, then joint them to runtimes
+      dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
+      by = c("jp_LinkRef", "JourneyPatternRef")) %>%
+    #Keep the cols we care about
+    dplyr::select(LineRef, SequenceNumber, VehicleJourneyCode, StopFrom, StopTo, DepartureTime, RunTime_journey, RunTime_vehicle)
+}
 
