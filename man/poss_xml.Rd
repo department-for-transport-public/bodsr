@@ -2,10 +2,13 @@
 % Please edit documentation in R/utils.R
 \name{poss_xml}
 \alias{poss_xml}
-\title{Try to read an xml file; where this fails, quietly return a NULL value}
+\title{Try to read an xml file using read_xml; where this fails, quietly return a NULL value}
 \usage{
 poss_xml(...)
 }
+\arguments{
+\item{...}{arguments to pass to the read_xml function}
+}
 \description{
-Try to read an xml file; where this fails, quietly return a NULL value
+Try to read an xml file using read_xml; where this fails, quietly return a NULL value
 }

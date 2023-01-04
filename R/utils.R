@@ -89,7 +89,9 @@ count_nodes <- function(x, xpath){
 }
 
 #' @name poss_xml
-#' @title Try to read an xml file; where this fails, quietly return a NULL value
+#' @title Try to read an xml file using read_xml; where this fails, quietly return a NULL value
+#'
+#' @param ... arguments to pass to the read_xml function
 #' @importFrom xml2 read_xml
 #' @importFrom purrr possibly
 

@@ -4,10 +4,10 @@
 \alias{stop_level_xml}
 \title{Extract a tidy dataset of stop-level journey data from the provided xml document}
 \usage{
-stop_level_xml(xml, count = 1, total_count = 1)
+stop_level_xml(x, count = 1, total_count = 1)
 }
 \arguments{
-\item{xml}{an xml object containing the relevant nodes}
+\item{x}{An xml object}
 
 \item{count}{numeric. Where the xml file is taken from a zip collection, the number file it is. Defaults to 1.}
 

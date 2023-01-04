@@ -124,23 +124,24 @@ extract_service_lookup <- function(i, xml){
 #' @name stop_level_xml
 #' @title Extract a tidy dataset of stop-level journey data from the provided xml document
 #'
-#' @param xml an xml object containing the relevant nodes
+#' @param x An xml object
 #' @param count numeric. Where the xml file is taken from a zip collection, the number file it is. Defaults to 1.
 #' @param total_count numeric. Where the xml file is taken from a zip collection, the total number of files in the zip. Defaults to 1.
 #'
 #' @importFrom xml2 read_xml
 #' @importFrom purrr map_df
 #' @importFrom dplyr select left_join "%>%"
+#' @importFrom rlang .data
 #'
 #' @return returns a dataframe of information extracted from the given nodes in the xml
 
 ##Get stop-level data from xml
-stop_level_xml <- function(xml, count = 1, total_count = 1){
+stop_level_xml <- function(x, count = 1, total_count = 1){
 
   #Return progress message
   message("Reading file ", count, " of ", total_count)
 
-  xml <- poss_xml(xml)
+  xml <- poss_xml(x)
 
 
   #If reading succeeds:
@@ -174,8 +175,9 @@ stop_level_xml <- function(xml, count = 1, total_count = 1){
         dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
         by = c("jp_LinkRef", "JourneyPatternRef")) %>%
       #Keep the cols we care about
-      dplyr::select(LineRef, SequenceNumber, VehicleJourneyCode, StopFrom, StopTo,
-                    DepartureTime, RunTime_journey, RunTime_vehicle)
+      dplyr::select(.data$LineRef, .data$SequenceNumber, .data$VehicleJourneyCode,
+                    .data$StopFrom, .data$StopTo,
+                    .data$DepartureTime, .data$RunTime_journey, .data$RunTime_vehicle)
   } else{
 
     #Create a blank table of values
