@@ -85,7 +85,7 @@ unwrap_service_xml <- function(i){
 ##Get stop-level data from xml
 stop_level_xml <- function(xml, count, total_count){
 
-  message("Reading file", count, "of", total_count)
+  message("Reading file ", count, " of ", total_count)
 
   xml <- xml2::read_xml(xml)
 

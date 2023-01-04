@@ -1,49 +1,3 @@
-##Utility functions for working with XML
-
-#' @name find_node_value
-#' @title Search an xml file for a specific named mode and return the value(s) stored in it
-#'
-#' @param x An xml object
-#' @param xpath string. The node name to search for within the xpath.
-#'
-#' @importFrom xml2 xml_find_all as_list xml_ns
-#'
-#' @return Returns a single string of values from the specified node
-
-##Return a specific value from xml
-find_node_value <- function(x, xpath){
-
-  ##If the d1 namespace is missing, return NA
-  if(any(grepl("d1", names(xml2::xml_ns(x))))){
-    xml2::xml_find_all(x = x, xpath = xpath) %>%
-      xml2::as_list() %>%
-      unlist()
-    } else{
-        NULL
-      }
-
-}
-
-##Utility functions for working with XML
-
-#' @name count_nodes
-#' @title Search an xml file for a specific named node and count the number of instances
-#'
-#' @param x An xml object
-#' @param xpath string. The node name to search for within the xpath.
-#'
-#' @importFrom xml2 xml_find_all as_list xml_ns
-#'
-#' @return Returns a numeric count value
-
-count_nodes <- function(x, xpath){
-
-  x %>%
-    xml2::xml_find_all(xpath) %>%
-    length()
-
-}
-
 #' @name line_level_xml
 #'
 #' @param x An xml object
@@ -57,9 +11,9 @@ count_nodes <- function(x, xpath){
 #' an xml document
 
 ##Get line-level details from an xml file
-line_level_xml <- function(xml, count, total_count){
+line_level_xml <- function(x, count, total_count){
 
-  message("Reading file", count, "of", total_count)
+  message("Reading file ", count, " of ", total_count)
 
   ##Create safe version of function that quietly fails
   poss_xml <- purrr::possibly(xml2::read_xml, otherwise = NULL)
@@ -143,3 +97,36 @@ open_all_xml <- function(url, fun){
                  total_count = length(files_to_read))
 }
 
+#' @name extract_line_level_data
+#' @title Open data from a single line metadata table where it's zip or xml format
+#'
+#' @param file A single row of table metadata extracted using get_timetable_metadata()
+#'
+#' @importFrom httr write_disk GET
+#'
+#' @return returns a dataframe of information extracted from the given xml or zip url
+
+extract_line_level_data <- function(file){
+
+  ##Try to unzip with names if it's a zip
+  if(file$extension == "zip"){
+
+    open_all_xml(file$url, line_level_xml)
+
+  } else if(file$extension == "xml"){
+
+    ##Download and open xml file
+    xml_loc <- tempfile(fileext = ".xml")
+
+    httr::GET(
+      url = file$url,
+      httr::write_disk(xml_loc, overwrite = TRUE)
+    )
+
+    line_level_xml(xml_loc, 1, 1)
+
+  }else{
+    stop("Unsupported file type")
+  }
+
+}

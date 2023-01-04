@@ -1,37 +1,3 @@
-#' @name extract_line_level_data
-#' @title Open data from a single line metadata table where it's zip or xml format
-#'
-#' @param file A single row of table metadata extracted using get_timetable_metadata()
-#'
-#' @importFrom httr write_disk GET
-#'
-#' @return returns a dataframe of information extracted from the given xml or zip url
-
-extract_line_level_data <- function(file){
-
-  ##Try to unzip with names if it's a zip
-  if(file$extension == "zip"){
-
-    open_all_xml(file$url, line_level_xml)
-
-  } else if(file$extension == "xml"){
-
-    ##Download and open xml file
-    xml_loc <- tempfile(fileext = ".xml")
-
-    httr::GET(
-      url = file$url,
-      httr::write_disk(xml_loc, overwrite = TRUE)
-    )
-
-    line_level_xml(xml_loc)
-
-  }else{
-    stop("Unsupported file type")
-  }
-
-}
-
 #' @name extract_stop_level_data
 #' @title Open stop-level data from a single line metadata table where it's zip or xml format
 #'
@@ -58,7 +24,7 @@ extract_stop_level_data <- function(file){
       httr::write_disk(xml_loc, overwrite = TRUE)
     )
 
-    stop_level_xml(xml_loc)
+    stop_level_xml(xml_loc, 1, 1)
 
   }else{
     stop("Unsupported file type")
@@ -103,7 +69,7 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
         ##Join to the URL deets
         dplyr::bind_cols(x)
 
-    } else if(level = "stop"){
+      } else if(level == "stop"){
 
       x %>%
         ##Read in the xml

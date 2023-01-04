@@ -41,3 +41,49 @@ not_null_date <- function(date, string) {
     NULL
   }
 }
+
+##Utility functions for working with XML
+
+#' @name find_node_value
+#' @title Search an xml file for a specific named mode and return the value(s) stored in it
+#'
+#' @param x An xml object
+#' @param xpath string. The node name to search for within the xpath.
+#'
+#' @importFrom xml2 xml_find_all as_list xml_ns
+#'
+#' @return Returns a single string of values from the specified node
+
+##Return a specific value from xml
+find_node_value <- function(x, xpath){
+
+  ##If the d1 namespace is missing, return NA
+  if(any(grepl("d1", names(xml2::xml_ns(x))))){
+    xml2::xml_find_all(x = x, xpath = xpath) %>%
+      xml2::as_list() %>%
+      unlist()
+  } else{
+    NULL
+  }
+
+}
+
+##Utility functions for working with XML
+
+#' @name count_nodes
+#' @title Search an xml file for a specific named node and count the number of instances
+#'
+#' @param x An xml object
+#' @param xpath string. The node name to search for within the xpath.
+#'
+#' @importFrom xml2 xml_find_all as_list xml_ns
+#'
+#' @return Returns a numeric count value
+
+count_nodes <- function(x, xpath){
+
+  x %>%
+    xml2::xml_find_all(xpath) %>%
+    length()
+
+}
