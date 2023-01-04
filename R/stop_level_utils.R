@@ -17,7 +17,7 @@ extract_stop_timing <- function(j, xml){
   node_name <- paste0("//d1:JourneyPatternSections//d1:JourneyPatternSection[",
                       j, "]//d1:JourneyPatternTimingLink")
 
-  inner_stops <- function(i, node_name, xml = xml){
+  inner_stops <- function(i, node_name, xml){
 
     tibble::tibble(
       "jp_LinkRef" = find_node_value(xml, paste0(node_name, "[", i, "]/@id")),
@@ -30,9 +30,10 @@ extract_stop_timing <- function(j, xml){
   }
 
   #Map this over every individual id
-    purrr::map_df(.x = 1:count_nodes(xml, node_name),
-                  .f = inner_stops,
-                  node_name = node_name) %>%
+  furrr::future_map_dfr(.x = 1:count_nodes(xml, node_name),
+                        .f = inner_stops,
+                        node_name = node_name,
+                        xml = xml) %>%
       dplyr::mutate("JourneyPatternSectionRef" = find_node_value(xml, paste0("//d1:JourneyPatternSections//d1:JourneyPatternSection[", j, "]/@id")))
 
 }
@@ -74,7 +75,7 @@ extract_vehicle_timing <- function(i, xml){
          "]/d1:VehicleJourneyTimingLink")
 
   ##Pull out the vehicle timing ref and runtime for each link
-  link_ref_runtime <- function(j, node_name, xml = xml){
+  link_ref_runtime <- function(j, node_name, xml){
     tibble::tibble(
       "jp_LinkRef" = find_node_value(xml, paste0(node_name, "[", j,
                                                 "]/d1:JourneyPatternTimingLinkRef")),
@@ -83,9 +84,9 @@ extract_vehicle_timing <- function(i, xml){
   }
 
   ##Loop over every link
-  purrr::map_df(.x = 1:count_nodes(xml, node_name),
-                .f = link_ref_runtime,
-                node_name = node_name) %>%
+  furrr::future_map_dfr(.x = 1:count_nodes(xml, node_name),
+                        .f = link_ref_runtime,
+                        node_name = node_name, xml = xml) %>%
     dplyr::bind_cols(
 
 
@@ -149,22 +150,22 @@ stop_level_xml <- function(x, count = 1, total_count = 1){
   if(!is.null(xml)){
     #Extract all 4 data sets
     ##Runtime from journey data
-    times_j <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
-                        .f = extract_stop_timing,
-                        xml = xml)
+    times_j <- furrr::future_map_dfr(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
+                                     .f = extract_stop_timing,
+                                     xml = xml)
 
     #Journey pattern and section lookups
-    jps_lookup <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
-                         .f = extract_service_lookup,
-                         xml = xml)
+    jps_lookup <- furrr::future_map_dfr(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
+                                        .f = extract_service_lookup,
+                                        xml = xml)
 
     #Vehicle journey codes and times
     vcodes <- extract_vehicle_journeys(xml)
 
     ##Journey times from vehicle data
-    times_v <-  purrr::map_df(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
-                          .f = extract_vehicle_timing,
-                          xml = xml) %>%
+    times_v <-  furrr::future_map_dfr(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
+                                      .f = extract_vehicle_timing,
+                                      xml = xml) %>%
       unique()
 
     ##Join everything up together
@@ -175,9 +176,9 @@ stop_level_xml <- function(x, count = 1, total_count = 1){
         dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
         by = c("jp_LinkRef", "JourneyPatternRef")) %>%
       #Keep the cols we care about
-      dplyr::select(.data$LineRef, .data$SequenceNumber, .data$VehicleJourneyCode,
-                    .data$StopFrom, .data$StopTo,
-                    .data$DepartureTime, .data$RunTime_journey, .data$RunTime_vehicle)
+      dplyr::select(dplyr::one_of(
+        "LineRef", "SequenceNumber", "VehicleJourneyCode", "StopFrom", "StopTo",
+        "DepartureTime", "RunTime_journey", "RunTime_vehicle"))
   } else{
 
     #Create a blank table of values
