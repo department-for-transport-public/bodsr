@@ -77,7 +77,7 @@ open_all_xml <- function(url, fun){
   ##Download to temp location
   zip_loc <- tempfile()
   folder <- tempdir()
-  #Remove everything from the folder
+    #Remove everything from the folder
   unlink(paste0(folder, "/*"))
 
   httr::GET(
@@ -92,11 +92,11 @@ open_all_xml <- function(url, fun){
   files_to_read <- list.files(folder, full.names = TRUE, pattern = "\\.xml")
 
   ##For each item in the folder, run extracting the single line over it
-  files <- furrr::future_map2_dfr(.x = files_to_read,
-                                  .y = 1:length(files_to_read),
-                                  .f = fun,
-                                  .id = "filepath",
-                                  total_count = length(files_to_read))
+  files <- purrr::map2_df(.x = files_to_read,
+                           .y = 1:length(files_to_read),
+                           .f = fun,
+                           .id = "filepath",
+                           total_count = length(files_to_read))
 
   return(files)
 }

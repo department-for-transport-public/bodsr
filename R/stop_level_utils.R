@@ -30,7 +30,7 @@ extract_stop_timing <- function(j, xml){
   }
 
   #Map this over every individual id
-  furrr::future_map_dfr(.x = 1:count_nodes(xml, node_name),
+  purrr::map_df(.x = 1:count_nodes(xml, node_name),
                         .f = inner_stops,
                         node_name = node_name,
                         xml = xml) %>%
@@ -84,7 +84,7 @@ extract_vehicle_timing <- function(i, xml){
   }
 
   ##Loop over every link
-  furrr::future_map_dfr(.x = 1:count_nodes(xml, node_name),
+  purrr::map_df(.x = 1:count_nodes(xml, node_name),
                         .f = link_ref_runtime,
                         node_name = node_name, xml = xml) %>%
     dplyr::bind_cols(
@@ -133,6 +133,7 @@ extract_service_lookup <- function(i, xml){
 #' @importFrom purrr map_df
 #' @importFrom dplyr select left_join "%>%"
 #' @importFrom rlang .data
+#' @importFrom tibble tibble add_column
 #'
 #' @return returns a dataframe of information extracted from the given nodes in the xml
 
@@ -150,23 +151,33 @@ stop_level_xml <- function(x, count = 1, total_count = 1){
   if(!is.null(xml)){
     #Extract all 4 data sets
     ##Runtime from journey data
-    times_j <- furrr::future_map_dfr(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
-                                     .f = extract_stop_timing,
-                                     xml = xml)
+    times_j <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
+                        .f = extract_stop_timing,
+                        xml = xml)
 
     #Journey pattern and section lookups
-    jps_lookup <- furrr::future_map_dfr(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
-                                        .f = extract_service_lookup,
-                                        xml = xml)
+    jps_lookup <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
+                         .f = extract_service_lookup,
+                         xml = xml)
 
     #Vehicle journey codes and times
     vcodes <- extract_vehicle_journeys(xml)
 
     ##Journey times from vehicle data
-    times_v <-  furrr::future_map_dfr(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
-                                      .f = extract_vehicle_timing,
-                                      xml = xml) %>%
+    times_v <-  purrr::map_df(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
+                          .f = extract_vehicle_timing,
+                          xml = xml) %>%
       unique()
+
+    ##Create deets of the cols we expect
+    cols <- c("LineRef" = NA_character_,
+              "SequenceNumber" = "0",
+              "VehicleJourneyCode"= NA_character_,
+              "StopFrom"= NA_character_,
+              "StopTo"= NA_character_,
+              "DepartureTime"= NA_character_,
+              "RunTime_journey"= NA_character_,
+              "RunTime_vehicle"= NA_character_)
 
     ##Join everything up together
     ##Join journey runtimes onto journey and vehicle codes
@@ -176,9 +187,18 @@ stop_level_xml <- function(x, count = 1, total_count = 1){
         dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
         by = c("jp_LinkRef", "JourneyPatternRef")) %>%
       #Keep the cols we care about
-      dplyr::select(dplyr::one_of(
+      suppressWarnings(dplyr::select(dplyr::one_of(
         "LineRef", "SequenceNumber", "VehicleJourneyCode", "StopFrom", "StopTo",
-        "DepartureTime", "RunTime_journey", "RunTime_vehicle"))
+        "DepartureTime", "RunTime_journey", "RunTime_vehicle"))) %>%
+      ##Create any cols that don't currently exist
+      tibble::add_column(!!!cols[!names(cols) %in% names(.)]) %>%
+      ##Keep only the runtime with sensible details in it
+      dplyr::mutate(RunTime =
+                      dplyr::case_when(
+                        gsub("[^[:digit:]]", "", RunTime_vehicle) != "" ~ RunTime_vehicle,
+                        TRUE ~ RunTime_journey)) %>%
+      dplyr::select(-c("RunTime_journey", "RunTime_vehicle"))
+
   } else{
 
     #Create a blank table of values
@@ -189,8 +209,7 @@ stop_level_xml <- function(x, count = 1, total_count = 1){
       StopFrom = character(),
       StopTo = character(),
       DepartureTime = character(),
-      RunTime_journey = character(),
-      RunTime_vehicle = character())
+      RunTime = character())
   }
 
   #If our tibble is blank, give a warning

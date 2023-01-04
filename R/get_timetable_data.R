@@ -56,7 +56,7 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
   }
 
   #Loop over all the rows
-  furrr::future_map(.x = 1:nrow(meta),
-                    .f = rowwise_extract)
+  purrr::map(.x = 1:nrow(meta),
+             .f = rowwise_extract)
 }
 
