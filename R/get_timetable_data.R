@@ -22,6 +22,13 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
                   .data$operatorName, .data$description, .data$status,
                   .data$extension, .data$dqScore, .data$dqRag)
 
+  ##Message warning how long this is going to take
+  if(level == "line"){
+    ##Return number of files
+    message("This metadata contains ", sum(xml_file_counter(meta)), " xml files")
+  }
+
+
   rowwise_extract <- function(i){
     message("Extracting row ", i, " of ", nrow(meta))
 
@@ -29,6 +36,7 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
 
     ##Select line or stop level data
     if(level == "line"){
+
       x %>%
         ##Read in the xml
         extract_line_level_data() %>%

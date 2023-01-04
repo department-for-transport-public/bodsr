@@ -77,6 +77,8 @@ open_all_xml <- function(url, fun){
   ##Download to temp location
   zip_loc <- tempfile()
   folder <- tempdir()
+  #Remove everything from the folder
+  unlink(paste0(folder, "/*"))
 
   httr::GET(
     url = url,
@@ -84,17 +86,19 @@ open_all_xml <- function(url, fun){
   )
 
   ##Unzip the zip file to the temp location
-  utils::unzip(zip_loc, exdir = folder)
+  utils::unzip(zip_loc, exdir = folder, overwrite = TRUE)
 
   ##Files to read in
   files_to_read <- list.files(folder, full.names = TRUE, pattern = "\\.xml")
 
   ##For each item in the folder, run extracting the single line over it
-  purrr::map2_df(.x = files_to_read,
-                 .y = 1:length(files_to_read),
-                 .f = fun,
-                 .id = "filepath",
-                 total_count = length(files_to_read))
+  files <- purrr::map2_df(.x = files_to_read,
+                           .y = 1:length(files_to_read),
+                           .f = fun,
+                           .id = "filepath",
+                           total_count = length(files_to_read))
+
+  return(files)
 }
 
 #' @name extract_line_level_data
