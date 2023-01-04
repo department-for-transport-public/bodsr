@@ -1,6 +1,9 @@
 #' @name line_level_xml
 #'
 #' @param x An xml object
+#' @param count numeric. Where the xml file is taken from a zip collection, the number file it is. Defaults to 1.
+#' @param total_count numeric. Where the xml file is taken from a zip collection, the total number of files in the zip. Defaults to 1.
+#'
 #' @title Pull a table of relevant values from specified nodes in the xml
 #'
 #' @importFrom xml2 read_xml
@@ -11,7 +14,7 @@
 #' an xml document
 
 ##Get line-level details from an xml file
-line_level_xml <- function(x, count, total_count){
+line_level_xml <- function(x, count = 1, total_count = 1){
 
   message("Reading file ", count, " of ", total_count)
 
@@ -59,7 +62,7 @@ line_level_xml <- function(x, count, total_count){
   }
 
 #' @name open_all_xml
-#' @title Open every xml file within a zip object and extract data of interest from it
+#' @title Open every xml file within a zip object and extract data of interest from it using a given function
 #'
 #' @param url A url pointing towards a zip object
 #' @param fun name of a data extracting function to apply to the zip folder
@@ -123,7 +126,7 @@ extract_line_level_data <- function(file){
       httr::write_disk(xml_loc, overwrite = TRUE)
     )
 
-    line_level_xml(xml_loc, 1, 1)
+    line_level_xml(xml_loc)
 
   }else{
     stop("Unsupported file type")

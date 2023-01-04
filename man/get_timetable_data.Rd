@@ -10,7 +10,7 @@ get_timetable_data(timetable_metadata, level = "line")
 \item{timetable_metadata}{A single row of table metadata extracted using get_timetable_metadata()}
 
 \item{level}{A string specifying whether data returned should be at the
-line or stop level. Options can be "line" or "stop"}
+bus line or individual stop level. Options can be "line" or "stop"}
 }
 \value{
 returns list of timetable dataframes, with each dataframe corresponding to a
