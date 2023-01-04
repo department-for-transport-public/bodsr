@@ -8,7 +8,6 @@
 #'
 #' @importFrom xml2 read_xml
 #' @importFrom tibble tibble
-#' @importFrom purrr possibly
 #'
 #' @return Returns a table of values extracted from specified nodes of
 #' an xml document
@@ -18,9 +17,7 @@ line_level_xml <- function(x, count = 1, total_count = 1){
 
   message("Reading file ", count, " of ", total_count)
 
-  ##Create safe version of function that quietly fails
-  poss_xml <- purrr::possibly(xml2::read_xml, otherwise = NULL)
-
+  #Read in xml safely
   xml <- poss_xml(x)
 
   if(!is.null(xml)){

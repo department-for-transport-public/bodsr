@@ -140,38 +140,62 @@ stop_level_xml <- function(xml, count = 1, total_count = 1){
   #Return progress message
   message("Reading file ", count, " of ", total_count)
 
-  xml <- xml2::read_xml(xml)
+  xml <- poss_xml(xml)
 
-  #Extract all 4 data sets
-  ##Runtime from journey data
-  times_j <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
-                      .f = extract_stop_timing,
-                      xml = xml)
 
-  #Journey pattern and section lookups
-  jps_lookup <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
-                       .f = extract_service_lookup,
-                       xml = xml)
+  #If reading succeeds:
 
-  #Vehicle journey codes and times
-  vcodes <- extract_vehicle_journeys(xml)
+  if(!is.null(xml)){
+    #Extract all 4 data sets
+    ##Runtime from journey data
+    times_j <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:JourneyPatternSections//d1:JourneyPatternSection"),
+                        .f = extract_stop_timing,
+                        xml = xml)
 
-  ##Journey times from vehicle data
-  times_v <-  purrr::map_df(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
-                        .f = extract_vehicle_timing,
-                        xml = xml) %>%
-    unique()
+    #Journey pattern and section lookups
+    jps_lookup <- purrr::map_df(.x = 1:count_nodes(xml, "//d1:StandardService/d1:JourneyPattern"),
+                         .f = extract_service_lookup,
+                         xml = xml)
 
-  ##Join everything up together
-  ##Join journey runtimes onto journey and vehicle codes
-  dplyr::left_join(times_j, jps_lookup, by = "JourneyPatternSectionRef") %>%
-    dplyr::left_join(
-      #Join vehicle journey times and patterns, then joint them to runtimes
-      dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
-      by = c("jp_LinkRef", "JourneyPatternRef")) %>%
-    #Keep the cols we care about
-    dplyr::select(LineRef, SequenceNumber, VehicleJourneyCode, StopFrom, StopTo,
-                  DepartureTime, RunTime_journey, RunTime_vehicle)
+    #Vehicle journey codes and times
+    vcodes <- extract_vehicle_journeys(xml)
+
+    ##Journey times from vehicle data
+    times_v <-  purrr::map_df(.x = 1:count_nodes(xml, "//d1:VehicleJourneys/d1:VehicleJourney"),
+                          .f = extract_vehicle_timing,
+                          xml = xml) %>%
+      unique()
+
+    ##Join everything up together
+    ##Join journey runtimes onto journey and vehicle codes
+    values <- dplyr::left_join(times_j, jps_lookup, by = "JourneyPatternSectionRef") %>%
+      dplyr::left_join(
+        #Join vehicle journey times and patterns, then joint them to runtimes
+        dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
+        by = c("jp_LinkRef", "JourneyPatternRef")) %>%
+      #Keep the cols we care about
+      dplyr::select(LineRef, SequenceNumber, VehicleJourneyCode, StopFrom, StopTo,
+                    DepartureTime, RunTime_journey, RunTime_vehicle)
+  } else{
+
+    #Create a blank table of values
+    values <- tibble::tibble(
+      LineRef = character(),
+      SequenceNumber = character(),
+      VehicleJourneyCode = character(),
+      StopFrom = character(),
+      StopTo = character(),
+      DepartureTime = character(),
+      RunTime_journey = character(),
+      RunTime_vehicle = character())
+  }
+
+  #If our tibble is blank, give a warning
+  if(nrow(values) == 0){
+    warning("File could not be read in:", x)
+  }
+
+  return(values)
 }
 
 
@@ -201,7 +225,7 @@ extract_stop_level_data <- function(file){
       httr::write_disk(xml_loc, overwrite = TRUE)
     )
 
-    stop_level_xml(xml_loc, 1, 1)
+    stop_level_xml(xml_loc)
 
   }else{
     stop("Unsupported file type")

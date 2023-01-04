@@ -87,3 +87,10 @@ count_nodes <- function(x, xpath){
     length()
 
 }
+
+#' @name poss_xml
+#' @title Try to read an xml file; where this fails, quietly return a NULL value
+#' @importFrom xml2 read_xml
+#' @importFrom purrr possibly
+
+poss_xml <- purrr::possibly(xml2::read_xml, otherwise = NULL)
