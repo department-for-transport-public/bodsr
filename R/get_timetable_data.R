@@ -25,12 +25,12 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
   ##Message warning how long this is going to take
   if(level == "line"){
     ##Return number of files
-    message("This metadata contains ", sum(xml_file_counter(meta)), " xml files")
+    message("This metadata contains ", sum(xml_file_counter(meta)), " xml file(s)")
   } else{
 
-    message("This metadata contains ", sum(xml_file_counter(meta)), " xml files.",
-            "Please note that extracting stop-level data will be extremely slow when extracting large or numerous xml files.
-            Use the xml_file_counter() to check how many xml files are in each provided line of metadata.")
+    message("This metadata contains ", sum(xml_file_counter(meta)), " xml file(s).
+    Please note that extracting stop-level data will be extremely slow when extracting large or numerous xml files.
+    Use the xml_file_counter() to check how many xml files are in each provided line of metadata.")
   }
 
 
