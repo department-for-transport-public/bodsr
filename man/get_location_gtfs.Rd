@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_location_gtfs.R
 \name{get_location_gtfs}
 \alias{get_location_gtfs}
-\title{Return GTFS-RT location data from the BODS API}
+\title{Return GTFS-RT location data from the 'BODS' API}
 \usage{
 get_location_gtfs(
   api_key = Sys.getenv("BODS_KEY"),
@@ -13,7 +13,7 @@ get_location_gtfs(
 )
 }
 \arguments{
-\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}}
+\item{api_key}{API key for the 'BODS' dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the 'BODS' API login}}
 
 \item{bounding_box}{vector of four numerics. Limit results to location data
 for vehicles within the rectangular boundingBox you set using co-ordinates
@@ -30,8 +30,22 @@ start time after the specified Unix timestamp. Defaults to NULL.}
 start time before the specified Unix timestamp. Defaults to NULL.}
 }
 \value{
-Returns bus location data in GTFS-RT format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the BODS data formats documentation}
+Returns bus location data in GTFS-RT format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the 'BODS' data formats documentation}
 }
 \description{
-Return GTFS-RT location data from the BODS API
+Return GTFS-RT location data from the 'BODS' API
+}
+\examples{
+
+\dontrun{
+#Before running these examples, ensure you have an API key saved
+
+
+#Return data for specified route ID
+get_location_gtfs(route_id = "45")
+
+#Return data within a specified bounding box
+get_location_gtfs(bounding_box = c(51.401, 51.509, 0.01, 0.201))
+
+}
 }

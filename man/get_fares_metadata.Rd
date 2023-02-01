@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_fares_metadata.R
 \name{get_fares_metadata}
 \alias{get_fares_metadata}
-\title{Return fares metadata from the BODS API}
+\title{Return fares metadata from the 'BODS' API}
 \usage{
 get_fares_metadata(
   api_key = Sys.getenv("BODS_KEY"),
@@ -13,8 +13,8 @@ get_fares_metadata(
 )
 }
 \arguments{
-\item{api_key}{API key for the BODS dataset passed as a string.
-Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}}
+\item{api_key}{API key for the 'BODS' dataset passed as a string.
+Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the 'BODS' API login}}
 
 \item{limit}{integer. Maximum number of records to return for a query. Defaults to 25}
 
@@ -31,10 +31,10 @@ you set using co-ordinates [minLatitude, maxLatitude, minLongitude, maxLongitude
 Defaults to NULL.}
 }
 \value{
-Returns a data frame of fares metadata including links to data from the BODS API.
+Returns a data frame of fares metadata including links to data from the 'BODS' API.
 }
 \description{
-Return fares metadata from the BODS API
+Return fares metadata from the 'BODS' API
 }
 \examples{
 

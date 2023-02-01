@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_location_xml.R
 \name{get_location_xml}
 \alias{get_location_xml}
-\title{Return XML vehicle location data from the BODS API}
+\title{Return XML vehicle location data from the 'BODS' API}
 \usage{
 get_location_xml(
   api_key = Sys.getenv("BODS_KEY"),
@@ -16,7 +16,7 @@ get_location_xml(
 )
 }
 \arguments{
-\item{api_key}{API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}}
+\item{api_key}{API key for the 'BODS' dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the 'BODS' API login}}
 
 \item{bounding_box}{vector of four numerics. Limit results to location data
 for vehicles within the rectangular boundingBox
@@ -48,8 +48,24 @@ which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85e
 Defaults to NULL.}
 }
 \value{
-Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the BODS data formats documentation}
+Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the 'BODS' data formats documentation}
 }
 \description{
-Return XML vehicle location data from the BODS API
+Return XML vehicle location data from the 'BODS' API
+}
+\examples{
+
+\dontrun{
+#Before running these examples, ensure you have an API key saved
+
+##Return unfiltered data from XML API
+get_location_xml()
+
+#Return data for vehicle reference "BUSC" only
+get_location_xml(vehicle_ref = "BUSC")
+
+#Return data for specified origin
+get_location_xml(origin_ref = "21024515")
+
+}
 }

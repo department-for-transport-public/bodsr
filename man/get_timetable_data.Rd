@@ -19,3 +19,20 @@ row on the provided timetable metadata
 \description{
 Extract timetable data from all rows of the provided metadata table
 }
+\examples{
+
+\dontrun{
+#Before running these examples, ensure you have an API key saved
+#Return the first 5 results of timetable metadata with no filters
+metadata <- get_timetable_metadata(limit = 5)
+
+#Return line-level data for the metadata
+get_timetable_data(metadata, level = "line")
+
+#Return stop-level data for the second row of metadata
+#Please note that this example may run very slowly
+get_timetable_data(metadata[2,], level = "stop")
+
+}
+
+}

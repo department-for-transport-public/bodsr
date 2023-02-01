@@ -2,16 +2,16 @@
 % Please edit documentation in R/noc_lookup.R
 \name{noc_lookup}
 \alias{noc_lookup}
-\title{Lookup between operator names and national operator code (NOC) lookup}
+\title{Lookup between operator names and national operator code ('NOC') lookup}
 \usage{
 noc_lookup()
 }
 \value{
 Returns a data frame of operator names and their corresponding national
-operator code from the BODS API.
+operator code from the 'BODS' API.
 }
 \description{
-Lookup between operator names and national operator code (NOC) lookup
+Lookup between operator names and national operator code ('NOC') lookup
 }
 \examples{
 

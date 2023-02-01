@@ -32,6 +32,22 @@
 #' @importFrom xml2 read_xml
 #'
 #' @return Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the 'BODS' data formats documentation}
+#'
+#' @examples
+#'
+#' \dontrun{
+#' #Before running these examples, ensure you have an API key saved
+#'
+#' ##Return unfiltered data from XML API
+#' get_location_xml()
+#'
+#' #Return data for vehicle reference "BUSC" only
+#' get_location_xml(vehicle_ref = "BUSC")
+#'
+#' #Return data for specified origin
+#' get_location_xml(origin_ref = "21024515")
+#'
+#' }
 
 #Function to pull in metadata
 get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),
@@ -84,6 +100,7 @@ get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),
 
   #Paste together URL for API
   url <- paste0("https://data.bus-data.dft.gov.uk/api/v1/datafeed?",
+                "&",
                 bounding_box,
                 noc,
                 vehicle_ref,
@@ -94,7 +111,7 @@ get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),
                 "api_key=", api_key)
 
   ##Read from url
-  download <- httr::GET(url, ua)
+  download <- httr::GET(url)
 
 
   ##Return error message if authentication failed

@@ -19,6 +19,21 @@
 #' @importFrom httr GET content http_status
 #'
 #' @return Returns bus location data in GTFS-RT format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the 'BODS' data formats documentation}
+#'
+#' @examples
+#'
+#' \dontrun{
+#' #Before running these examples, ensure you have an API key saved
+#'
+#'
+#' #Return data for specified route ID
+#' get_location_gtfs(route_id = "45")
+#'
+#' #Return data within a specified bounding box
+#' get_location_gtfs(bounding_box = c(51.401, 51.509, 0.01, 0.201))
+#'
+#' }
+
 
 #Function to pull in metadata
 get_location_gtfs <- function(api_key = Sys.getenv("BODS_KEY"),
@@ -51,6 +66,7 @@ get_location_gtfs <- function(api_key = Sys.getenv("BODS_KEY"),
 
   #Paste together URL for API
   url <- paste0("https://data.bus-data.dft.gov.uk/api/v1/gtfsrtdatafeed/?",
+                "&",
                 bounding_box,
                 route_id,
                 start_time_after,
