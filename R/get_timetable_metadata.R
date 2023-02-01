@@ -1,10 +1,10 @@
-##Return timetable metadata table from the BODS API, including urls of full datasets
+##Return timetable metadata table from the 'BODS' API, including urls of full datasets
 
 #' @name get_timetable_metadata
-#' @title Return timetable metadata from the BODS API
+#' @title Return timetable metadata from the 'BODS' API
 #' @export
 #'
-#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}
+#' @param api_key API key for the 'BODS' dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}
 #' @param limit integer. Maximum number of records to return for a query. Defaults to 25
 #' @param noc string or vector of strings. Limit results to fares data sets for specified National Operator Codes.
 #' A full lookup of NOC to bus operator names can be seen using noc_lookup().
@@ -13,7 +13,7 @@
 #' match the data set name, data set description, organisation name, or admin
 #' area name. Defaults to NULL.
 #' @param admin_area string or vector of strings. Limit results to datasets with services that stop
-#' within the specified area(s).  ATCO Area Codes are as specified in the \href{https://www.data.gov.uk/dataset/3b1766bf-04a3-44f5-bea9-5c74cf002e1d/national-public-transport-gazetteer-nptg}{NPTG area codes}
+#' within the specified area(s).  'ATCO' Area Codes are as specified in the \href{https://www.data.gov.uk/dataset/3b1766bf-04a3-44f5-bea9-5c74cf002e1d/national-public-transport-gazetteer-nptg}{NPTG area codes}
 #' Defaults to NULL.
 #' @param status string. Limit results to data sets with the specified status,
 #' accepted values are "published" or "inactive". Defaults to NULL.
@@ -35,7 +35,7 @@
 #' @importFrom httr GET content http_status
 #' @importFrom jsonlite fromJSON
 #'
-#' @return Returns a data frame of timetable metadata including links to data from the BODS API.
+#' @return Returns a data frame of timetable metadata including links to data from the 'BODS' API.
 #' @examples
 #'
 #' \dontrun{

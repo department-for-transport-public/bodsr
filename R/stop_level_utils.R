@@ -127,6 +127,7 @@ extract_service_lookup <- function(i, xml){
 #' @importFrom purrr map_df
 #' @importFrom dplyr select left_join "%>%"
 #' @importFrom rlang .data
+#' @importFrom utils globalVariables
 #' @importFrom tibble tibble add_column
 #'
 #' @return returns a dataframe of information extracted from the given nodes in the xml
@@ -175,17 +176,23 @@ stop_level_xml <- function(x, count = 1, total_count = 1){
 
     ##Join everything up together
     ##Join journey runtimes onto journey and vehicle codes
-    values <- dplyr::left_join(times_j, jps_lookup, by = "JourneyPatternSectionRef") %>%
+    values <- dplyr::left_join(times_j, jps_lookup,
+                               by = "JourneyPatternSectionRef") %>%
       dplyr::left_join(
         #Join vehicle journey times and patterns, then joint them to runtimes
-        dplyr::left_join(vcodes, times_v, by = c("LineRef", "JourneyPatternRef")),
+        dplyr::left_join(vcodes, times_v,
+                         by = c("LineRef", "JourneyPatternRef")),
         by = c("jp_LinkRef", "JourneyPatternRef")) %>%
       #Keep the cols we care about
-      suppressWarnings(dplyr::select(dplyr::one_of(
+      suppressWarnings(
+        dplyr::select(
+          dplyr::one_of(
         "LineRef", "SequenceNumber", "VehicleJourneyCode", "StopFrom", "StopTo",
-        "DepartureTime", "RunTime_journey", "RunTime_vehicle"))) %>%
+        "DepartureTime", "RunTime_journey", "RunTime_vehicle")))
+
+    values <- values %>%
       ##Create any cols that don't currently exist
-      tibble::add_column(!!!cols[!names(cols) %in% names(.)]) %>%
+      tibble::add_column(!!!cols[!names(cols) %in% names(values)]) %>%
       ##Keep only the runtime with sensible details in it
       dplyr::mutate(RunTime =
                       dplyr::case_when(

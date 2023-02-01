@@ -1,10 +1,10 @@
-##Return SIRI-VM XML vehicle location data from the BODS API
+##Return SIRI-VM XML vehicle location data from the 'BODS' API
 
 #' @name get_location_xml
-#' @title Return XML vehicle location data from the BODS API
+#' @title Return XML vehicle location data from the 'BODS' API
 #' @export
 #'
-#' @param api_key API key for the BODS dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the BODS API login}
+#' @param api_key API key for the 'BODS' dataset passed as a string. Can be obtained from \href{https://data.bus-data.dft.gov.uk/api/}{the 'BODS' API login}
 #' @param bounding_box vector of four numerics. Limit results to location data
 #' for vehicles within the rectangular boundingBox
 #' you set using co-ordinates [minLatitude, maxLatitude, minLongitude, maxLongitude].
@@ -31,7 +31,7 @@
 #' @importFrom httr GET content http_status
 #' @importFrom xml2 read_xml
 #'
-#' @return Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the BODS data formats documentation}
+#' @return Returns bus location data in XML SIRI-VM format. More detail on this format can be found \href{https://data.bus-data.dft.gov.uk/guidance/requirements/?section=dataformats}{the 'BODS' data formats documentation}
 
 #Function to pull in metadata
 get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),

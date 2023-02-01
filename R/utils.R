@@ -57,7 +57,7 @@ not_null_date <- function(date, string) {
 ##Return a specific value from xml
 find_node_value <- function(x, xpath){
 
-  ##If the d1 namespace is missing, return NA
+  ##If the d1 namespace is missing, return empty value
   if(any(grepl("d1", names(xml2::xml_ns(x))))){
     xml2::xml_find_all(x = x, xpath = xpath) %>%
       xml2::as_list() %>%
