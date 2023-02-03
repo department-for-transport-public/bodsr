@@ -2,7 +2,7 @@ test_that("counts individual xml files", {
 
   skip_on_cran()
 
-  meta <- bodsr::get_timetable_metadata(limit = 10)
+  meta <- get_timetable_metadata(limit = 10)
   meta <- meta[meta$extension == "xml",]
 
   expect_equal(xml_file_counter(meta), rep(1, length(meta$id)))
@@ -12,7 +12,7 @@ test_that("counts individual xml files", {
 test_that("counts inside zip files", {
   skip_on_cran()
 
-  meta <- bodsr::get_timetable_metadata(limit = 10)
+  meta <- get_timetable_metadata(limit = 10)
   meta <- meta[meta$extension == "zip",]
 
   expect_equal(length(xml_file_counter(meta)), length(meta$id))

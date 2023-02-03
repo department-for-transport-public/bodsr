@@ -116,14 +116,17 @@ get_location_xml <- function(api_key = Sys.getenv("BODS_KEY"),
 
   ##Return error message if authentication failed
   if(httr::http_status(download)$reason == "Unathorized"){
-    stop("Authentication credentials are not valid; please check you are using a valid BODS API key")
-  }
 
-  if(httr::http_status(download)$reason == "Bad Request"){
+    stop("Authentication credentials are not valid; please check you are using a valid BODS API key")
+
+    } else if(httr::http_status(download)$reason == "Bad Request"){
+
     stop("Bad request; please check you have passed arguments to the function correctly")
-  }
+
+  } else{
 
   ##Read xml
   xml2::read_xml(download)
+  }
 
 }
