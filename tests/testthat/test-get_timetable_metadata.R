@@ -36,3 +36,17 @@ test_that("test that arguments work as expected", {
 
 
 })
+
+test_that("test that noc search succeeds and fails as expected", {
+
+  skip_on_cran()
+
+  expect_equal(unlist(unique(get_timetable_metadata(noc = "HUYT")$noc)),
+               "HUYT")
+
+  expect_error(get_timetable_metadata(noc = "HUY"),
+               "Invalid NOC codes:HUY")
+
+
+})
+
