@@ -99,13 +99,11 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
   download <- httr::GET(url, ua)
 
   ##Return error message if authentication failed
-  if(httr::http_status(download)$reason == "Unathorized"){
+  if(httr::http_status(download)$reason != "OK"){
     stop("Authentication credentials are not valid; please check you are using a valid BODS API key")
-  }
-
-  if(httr::http_status(download)$reason == "Bad Request"){
+  } else if(httr::http_status(download)$reason == "Bad Request"){
     stop("Bad request; please check you have passed arguments to the function correctly")
-  }
+  } else{
 
   data <- jsonlite::fromJSON(
     httr::content(download, as = "text", encoding = "UTF-8"))$results
@@ -113,6 +111,7 @@ get_fares_metadata <- function(api_key = Sys.getenv("BODS_KEY"),
   message(paste("Returning", nrow(data), "records"))
 
   return(data)
+  }
 
 }
 
