@@ -45,6 +45,6 @@ As for fare and timetable data, location data can be filtered on a range of para
 
 ## Timetable data
 
-Once timetable metadata has been returned, this data can be provided to the `get_timetable_data()` function, which will parse the xml/zip files specified and return the timetable data at either a line level or a stop level in an R data format.
+Once timetable metadata has been returned, this data can be provided to the `get_timetable_data()` function, which will parse the xml/zip files specified and return the timetable data as a list with one bus line per row and one dataframe per parsed file.
 
-Please note that due to the size of the data files involved, queries using this function can be very slow to run and use a large amount of RAM to perform.
+Please note that due to the size of the data files involved, queries using this function can be slow to run and use a large amount of RAM to perform.
