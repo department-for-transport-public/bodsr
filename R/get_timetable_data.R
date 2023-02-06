@@ -1,9 +1,7 @@
 #' @name get_timetable_data
-#' @title Extract timetable data from all rows of the provided metadata table
+#' @title Extract line-level timetable data from all rows of the provided metadata table
 #'
 #' @param timetable_metadata A single row of table metadata extracted using get_timetable_metadata()
-#' @param level A string specifying whether data returned should be at the
-#' bus line or individual stop level. Options can be "line" or "stop"
 #'
 #' @importFrom httr write_disk GET
 #' @importFrom dplyr "%>%" bind_cols select
@@ -21,17 +19,11 @@
 #' #Return the first 5 results of timetable metadata with no filters
 #' metadata <- get_timetable_metadata(limit = 5)
 #'
-#' #Return line-level data for the metadata
-#' get_timetable_data(metadata, level = "line")
-#'
-#' #Return stop-level data for the second row of metadata
-#' #Please note that this example may run very slowly
-#' get_timetable_data(metadata[2,], level = "stop")
 #'
 #' }
 #'
 
-get_timetable_data <- function(timetable_metadata, level = "line"){
+get_timetable_data <- function(timetable_metadata){
 
   ##Extract metadata that applies to all files
   meta <- timetable_metadata %>%
@@ -40,45 +32,22 @@ get_timetable_data <- function(timetable_metadata, level = "line"){
                   .data$extension, .data$dqScore, .data$dqRag)
 
   ##Message warning how long this is going to take
-  if(level == "line"){
-    ##Return number of files
-    message("This metadata contains ", sum(xml_file_counter(meta)), " xml file(s)")
-  } else{
-
-    message("This metadata contains ", sum(xml_file_counter(meta)), " xml file(s).
-    Please note that extracting stop-level data will be extremely slow when extracting large or numerous xml files.
-    Use the xml_file_counter() to check how many xml files are in each provided line of metadata.")
-  }
-
+  ##Return number of files
+  message("This metadata contains ", sum(xml_file_counter(meta)), " xml file(s)")
 
   rowwise_extract <- function(i){
     message("Extracting row ", i, " of ", nrow(meta))
 
     x <- meta[i, ]
 
-    ##Select line or stop level data
-    if(level == "line"){
-
       x %>%
         ##Read in the xml
         extract_line_level_data() %>%
         ##Join to the URL deets
         dplyr::bind_cols(x)
-
-      } else if(level == "stop"){
-
-      x %>%
-        ##Read in the xml
-        extract_stop_level_data() %>%
-        ##Join to the URL deets
-        dplyr::bind_cols(x)
-    } else{
-      stop("Level type not recognised. Accepted values are 'level' or 'stop'")
-    }
   }
 
   #Loop over all the rows
   purrr::map(.x = 1:nrow(meta),
              .f = rowwise_extract)
 }
-
