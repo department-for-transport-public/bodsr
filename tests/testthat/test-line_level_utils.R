@@ -21,6 +21,8 @@ test_that("example xml file returns expected data", {
 
 test_that("count message can be adjusted", {
 
+  skip_on_cran()
+
   xml <- "../testdata/test_timetable.xml"
 
   expect_message(line_level_xml(xml, 2, 2), "Reading file 2 of 2")
