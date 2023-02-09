@@ -39,12 +39,12 @@ specified producer_ref. Defaults to NULL.}
 
 \item{origin_ref}{string. Limit results to bus location data with the
 specified origin reference. Accepts any National Public Transport Access Nodes (NaPTAN) value,
-which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
+which can be found \href{https://www.data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
 Defaults to NULL.}
 
 \item{destination_ref}{string. Limit results to bus location data with the
 specified destination reference. Accepts any National Public Transport Access Nodes (NaPTAN) value,
-which can be found \href{https://data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
+which can be found \href{https://www.data.gov.uk/dataset/ff93ffc1-6656-47d8-9155-85ea0b8f2251/national-public-transport-access-nodes-naptan}{the NaPTAN access nodes dataset}.
 Defaults to NULL.}
 }
 \value{

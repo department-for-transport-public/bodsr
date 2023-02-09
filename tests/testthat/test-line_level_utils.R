@@ -10,6 +10,8 @@ test_that("faulty xml file fails cleanly", {
 
 test_that("example xml file returns expected data", {
 
+  skip_on_cran()
+
   xml <- "../testdata/test_timetable.xml"
 
   expect_equal(nrow(line_level_xml(xml)), 3)

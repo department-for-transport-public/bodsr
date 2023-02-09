@@ -16,5 +16,7 @@ Lookup between operator names and national operator code ('NOC') lookup
 \examples{
 
 ##Check operator name lookup
+\dontrun{
 noc_lookup()
+}
 }
