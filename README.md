@@ -3,8 +3,8 @@ The goal of bodsr is to allow easy interface between the Bus Open Data Service (
 ## Installation
 You can install the development version of bodsr from GitHub with:
 
-# install.packages("devtools")
-devtools::install_github("department-for-transport-public/bodsr")
+`install.packages("devtools")
+devtools::install_github("department-for-transport-public/bodsr")`
 
 ## Usage
 bodsr has a range of functions designed to make it easy for you to interrogate the BODS API and receive the results as R data objects.
