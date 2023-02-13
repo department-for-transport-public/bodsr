@@ -1,3 +1,7 @@
+<!-- badges: start -->
+  [![R-CMD-check](https://github.com/department-for-transport/bodsr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/department-for-transport/bodsr/actions/workflows/R-CMD-check.yaml)
+  <!-- badges: end -->
+
 The goal of bodsr is to allow easy interface between the Bus Open Data Service (BODS) API and R. The BODS dataset provides fares, timetable and vehicle location information about bus services in England. Further details and documentation on the BODS API can be found [here](https://www.gov.uk/government/collections/bus-open-data-service).
 
 ## Installation
