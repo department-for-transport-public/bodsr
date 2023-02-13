@@ -1,9 +1,7 @@
 <!-- badges: start -->
   [![R-CMD-check](https://github.com/department-for-transport/bodsr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/department-for-transport/bodsr/actions/workflows/R-CMD-check.yaml)
-  
   [![CRAN
 status](https://www.r-pkg.org/badges/version/bodsr)](https://CRAN.R-project.org/package=bodsr)
-
 [![](https://cranlogs.r-pkg.org/badges/bodsr)](https://cran.r-project.org/package=bodsr)
   <!-- badges: end -->
 
