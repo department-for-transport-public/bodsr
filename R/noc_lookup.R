@@ -10,7 +10,9 @@
 #' @examples
 #'
 #' ##Check operator name lookup
+#' \dontrun{
 #' noc_lookup()
+#' }
 
 noc_lookup <- function(){
 

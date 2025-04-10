@@ -2,22 +2,19 @@
 % Please edit documentation in R/get_timetable_data.R
 \name{get_timetable_data}
 \alias{get_timetable_data}
-\title{Extract timetable data from all rows of the provided metadata table}
+\title{Extract line-level timetable data from all rows of the provided metadata table}
 \usage{
-get_timetable_data(timetable_metadata, level = "line")
+get_timetable_data(timetable_metadata)
 }
 \arguments{
 \item{timetable_metadata}{A single row of table metadata extracted using get_timetable_metadata()}
-
-\item{level}{A string specifying whether data returned should be at the
-bus line or individual stop level. Options can be "line" or "stop"}
 }
 \value{
 returns list of timetable dataframes, with each dataframe corresponding to a
 row on the provided timetable metadata
 }
 \description{
-Extract timetable data from all rows of the provided metadata table
+Extract line-level timetable data from all rows of the provided metadata table
 }
 \examples{
 
@@ -26,12 +23,6 @@ Extract timetable data from all rows of the provided metadata table
 #Return the first 5 results of timetable metadata with no filters
 metadata <- get_timetable_metadata(limit = 5)
 
-#Return line-level data for the metadata
-get_timetable_data(metadata, level = "line")
-
-#Return stop-level data for the second row of metadata
-#Please note that this example may run very slowly
-get_timetable_data(metadata[2,], level = "stop")
 
 }
 
